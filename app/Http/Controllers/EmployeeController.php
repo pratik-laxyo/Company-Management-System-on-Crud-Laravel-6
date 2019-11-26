@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\employee;
 use App\company;
 use Illuminate\Http\Request;
+use \App\Mail\SendMail;
+use Yajra\DataTables\DataTables;
+/*use App\Exports\EmployeeExport;
+use Maatwebsite\Excel\Facades\Excel;*/
+
 
 class EmployeeController extends Controller
 {
@@ -23,6 +28,7 @@ class EmployeeController extends Controller
         $employees = Employee::latest()->paginate(10);
         $companys = Company::get();
         return view('panel.employee.index',compact('employees','companys'))->with('i', (request()->input('page', 1) - 1) * 10);
+        //return view('panel.employee.index');
     }
 
     /**
@@ -53,6 +59,16 @@ class EmployeeController extends Controller
         ]);
   
         Employee::create($request->all());
+
+        $details = [
+            'name' => $request->first_name.' '.$request->last_name,
+            'email' => $request->email,
+            'phone' => $request->phone
+        ];
+
+        //return $details;
+
+        \Mail::to('pratik@laxyo.org')->send(new SendMail($details));
    
         return redirect()->route('employee.index')->with('success','Employee Added successfully.');
     }
@@ -113,4 +129,10 @@ class EmployeeController extends Controller
         $employee->delete();
         return redirect()->route('employee.index')->with('success','Employee record deleted successfully');
     }
+
+    /*public function export() 
+    {
+        return Excel::download(new EmployeeExport, 'employee.xlsx');
+    }*/
+
 }

@@ -17,8 +17,9 @@
             <p>{{ $message }}</p>
         </div>
     @endif
-   
-    <table class="table table-bordered">
+    {{-- <a class="btn btn-warning" href="{{ route('export') }}">Export User Data</a> --}}
+    <table class="table table-bordered" id="student_table">
+        <thead>
         <tr>
             <th>No</th>
             <th>First Name</th>
@@ -26,10 +27,9 @@
             <th>Company</th>
             <th>Email</th>
             <th>Phone No.</th>
-            <th width="250px">Action</th>
+            <th>Action</th>
         </tr>
-        <!-- $company_id = $companys[0]->id -->
-
+        </thead>
 
         @if (!empty($employees))
         @foreach ($employees as $row)
@@ -63,7 +63,5 @@
             </div>
         @endif
     </table>
-  
     {!! $employees->links() !!}
-      
 @endsection

@@ -10,3 +10,4 @@ class employee extends Model
         'first_name', 'last_name', 'company', 'email', 'phone'
       ];
 }
+
