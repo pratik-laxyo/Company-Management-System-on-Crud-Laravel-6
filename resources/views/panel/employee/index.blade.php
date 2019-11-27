@@ -1,13 +1,31 @@
 @extends('panel.employee.layout.layout')
  
 @section('content')
+		
+    <div class="row">
+	    	<div class="col-md-12">
+	        	<a class="float-lift btn btn-warning" href="{{ route('export') }}">Export User Data</a>
+	        	<a class="float-right btn btn-success" href="{{ route('employee.create') }}"> Create new employee</a>
+	      </div>
+    </div>
+
+    <div class="row">
+    	<div class="col-md-4"></div>
+    	<div class="col-md-4">
+            <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="file" name="file" class="form-control">
+                <br>
+                <button class="btn btn-success">Import User Data</button>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
                 <h2>Employee Listing</h2>
-            </div>
-            <div class="float-right">
-                <a class="btn btn-success" href="{{ route('employee.create') }}"> Create new employee</a>
             </div>
         </div>
     </div>
@@ -17,7 +35,7 @@
             <p>{{ $message }}</p>
         </div>
     @endif
-    {{-- <a class="btn btn-warning" href="{{ route('export') }}">Export User Data</a> --}}
+    
     <table class="table table-bordered" id="student_table">
         <thead>
         <tr>

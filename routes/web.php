@@ -29,4 +29,5 @@ Route::resource('company', 'CompanyController');
 Route::resource('employee', 'EmployeeController');
 Route::resource('test', 'TestController');
 //Route::get('employee', 'EmployeeController@anyData')->name('employee.anyData');
-/*Route::get('export/', 'EmployeeController@export')->name('export');*/
+Route::get('export/', 'EmployeeController@export')->name('export');
+Route::post('import', 'EmployeeController@import')->name('import');

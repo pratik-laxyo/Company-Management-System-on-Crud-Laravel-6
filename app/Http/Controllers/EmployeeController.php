@@ -7,8 +7,9 @@ use App\company;
 use Illuminate\Http\Request;
 use \App\Mail\SendMail;
 use Yajra\DataTables\DataTables;
-/*use App\Exports\EmployeeExport;
-use Maatwebsite\Excel\Facades\Excel;*/
+use App\Exports\EmployeeExport;
+use App\Imports\EmployeeImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class EmployeeController extends Controller
@@ -130,9 +131,15 @@ class EmployeeController extends Controller
         return redirect()->route('employee.index')->with('success','Employee record deleted successfully');
     }
 
-    /*public function export() 
+    public function export() 
     {
         return Excel::download(new EmployeeExport, 'employee.xlsx');
-    }*/
+    }
+
+    public function import() 
+    {
+    		Excel::import(new EmployeeImport,request()->file('file'));
+        return back();
+    }
 
 }
