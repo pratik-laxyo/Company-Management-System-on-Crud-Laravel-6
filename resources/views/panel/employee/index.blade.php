@@ -66,7 +66,6 @@
             <td>{{ $row->phone }}</td>
             <td>
                 <form action="{{ route('employee.destroy',$row->id) }}" method="POST">
-                		<a class="btn btn-warning" href="{{ route('role',$row->id) }}">Role</a>
                     <a class="btn btn-primary" href="{{ route('employee.edit',$row->id) }}">Edit</a>
                     @csrf
                     @method('DELETE')

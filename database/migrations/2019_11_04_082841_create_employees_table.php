@@ -20,7 +20,6 @@ class CreateEmployeesTable extends Migration
             $table->string('company');
             $table->string('email');
             $table->string('phone');
-            $table->bigIncrements('user_id');
             $table->timestamps();
         });
     }

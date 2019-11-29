@@ -4,21 +4,16 @@ namespace App\Http\Controllers;
 
 use App\employee;
 use App\company;
-use App\User;
 use Illuminate\Http\Request;
 use \App\Mail\SendMail;
 use Yajra\DataTables\DataTables;
 use App\Exports\EmployeeExport;
 use App\Imports\EmployeeImport;
 use Maatwebsite\Excel\Facades\Excel;
-use Spatie\Permission\Models\Role;
-use DB;
-use Hash;
-use Auth;
+
 
 class EmployeeController extends Controller
 {
-	
 
     public function __construct()
     {
@@ -34,6 +29,7 @@ class EmployeeController extends Controller
         $employees = Employee::latest()->paginate(10);
         $companys = Company::get();
         return view('panel.employee.index',compact('employees','companys'))->with('i', (request()->input('page', 1) - 1) * 10);
+        //return view('panel.employee.index');
     }
 
     /**
@@ -59,35 +55,19 @@ class EmployeeController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'company' => 'required',
-            'email' => 'required|email|unique:users',
-            'phone' => 'required',
-            'password' => 'required|same:cpassword'
+            'email' => 'required',
+            'phone' => 'required'
         ]);
-  	
-  			$userTable = [
-            'name' => $request->first_name.' '.$request->last_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ];
-        $user = User::create($userTable);
-        $LastInsertId = $user->id;
-        if(!empty($LastInsertId)){
-		        $employeeTable = [
-		            'first_name' => $request->first_name,
-		            'last_name' => $request->last_name,
-		            'company' => $request->company,
-		            'email' => $request->email,
-		            'phone' => $request->phone,
-		            'user_id' => $LastInsertId
-		        ];
-		        Employee::create($employeeTable);
-		    }
+  
+        Employee::create($request->all());
 
         $details = [
             'name' => $request->first_name.' '.$request->last_name,
             'email' => $request->email,
             'phone' => $request->phone
         ];
+
+        //return $details;
 
         \Mail::to('pratik@laxyo.org')->send(new SendMail($details));
    
@@ -100,11 +80,9 @@ class EmployeeController extends Controller
      * @param  \App\employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function show(employee $employee, $id)
+    public function show(employee $employee)
     {
-    		$employees = employee::where('user_id',$id)->get();
-    		$employee = $employees[0];
-        return view('panel.employee.show',compact('employee'));
+        //return view('employee.show',compact('employee'));
     }
 
     /**
@@ -135,16 +113,8 @@ class EmployeeController extends Controller
             'email' => 'required',
             'phone' => 'required'
         ]);
-
-        $userTable = [
-            'name' => $request->first_name.' '.$request->last_name,
-            'email' => $request->email
-        ];
-  			
-  			$user = User::find($request->user_id);
-        $user->update($userTable);
+  
         $employee->update($request->all());
-
   
         return redirect()->route('employee.index')->with('success','Employee details updated successfully');
     }
@@ -157,8 +127,7 @@ class EmployeeController extends Controller
      */
     public function destroy(employee $employee)
     {
-    		$employee->delete();
-        User::find($employee->user_id)->delete();
+        $employee->delete();
         return redirect()->route('employee.index')->with('success','Employee record deleted successfully');
     }
 
@@ -173,25 +142,4 @@ class EmployeeController extends Controller
         return back();
     }
 
-    public function role(employee $employee, $id)
-    {
-    		$employee = employee::find($id);
-    		$roles = Role::get();
-        return view('panel.employee.role',compact('employee','roles'));
-    }
-
-    public function roleUpdate(Request $request, employee $employee, $id){
-    		$request->validate([
-            'role_id' => 'required'
-        ]);
-        $employeeTable = [
-            'role_id' => $request->role_id
-        ];
-    		$employee = employee::find($id);
-    		$employee->update($employeeTable);
-    		$user = $employee->user_id;
-    		$user = User::find($user);
-    		$user->assignRole('Employee');
-				return redirect()->route('employee.index')->with('success','Employee Role updated successfully');
-    }
 }

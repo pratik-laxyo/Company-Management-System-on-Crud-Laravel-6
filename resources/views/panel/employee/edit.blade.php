@@ -61,11 +61,10 @@
                 <div class="form-group">
                     <strong>Phone No.:</strong>
                     <input type="text" name="phone" value="{{ $employee->phone }}" class="form-control" placeholder="Phone No.">
-                    <input type="hidden" name="user_id" value="{{ $employee->user_id }}">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </div>
    
