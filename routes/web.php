@@ -25,9 +25,14 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('company', 'CompanyController');
-Route::resource('employee', 'EmployeeController');
-Route::resource('test', 'TestController');
-//Route::get('employee', 'EmployeeController@anyData')->name('employee.anyData');
-Route::get('export/', 'EmployeeController@export')->name('export');
-Route::post('import', 'EmployeeController@import')->name('import');
+Route::group(['middleware' => ['auth']], function() {
+		Route::resource('company', 'CompanyController');
+		Route::resource('employee', 'EmployeeController');
+		Route::resource('role', 'RoleController');
+		Route::resource('test', 'TestController');
+		Route::get('export/', 'EmployeeController@export')->name('export');
+		Route::post('import', 'EmployeeController@import')->name('import');
+		Route::get('/employee/{id}/role', 'EmployeeController@role')->name('role');
+		Route::get('/employee/{id}/show', 'EmployeeController@show')->name('show');
+		Route::patch('/employee/{id}/roleUpdate', 'EmployeeController@roleUpdate')->name('roleUpdate');
+});

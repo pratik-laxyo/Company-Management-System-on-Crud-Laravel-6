@@ -23,45 +23,32 @@
         </div>
     @endif
   
-    <form action="{{ route('employee.update',$employee->id) }}" method="POST">
+    <form action="{{ route('roleUpdate',$employee->id) }}" method="POST">
         @csrf
-        @method('PUT')
+        @method('PATCH')
             
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>First Name:</strong>
-                    <input type="text" name="first_name" value="{{ $employee->first_name }}" class="form-control" placeholder="First Name">
+                    <input type="text" name="first_name" value="{{ $employee->first_name }}" class="form-control" placeholder="First Name" readonly="">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Last Name:</strong>
-                    <input type="text" name="last_name" value="{{ $employee->last_name }}" class="form-control" placeholder="Last Name">
+                    <input type="text" name="last_name" value="{{ $employee->last_name }}" class="form-control" placeholder="Last Name" readonly="">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                    <strong>Company:</strong>
-                    <select name="company" class="form-control">
-                        <option disabled="" selected="">Select</option>
-                        @foreach ($companys as $company)
-                            <option value="{{ $company->id }}" @if ($company->id == $employee->company) selected @endif >{{ $company->name }}</option>
-                        @endforeach
+                    <strong>Roles:</strong>
+                    <select name="role_id" class="form-control">
+                    	<option disabled="" selected="" value="0">Select Role</option>
+                    	@foreach($roles as $role)
+                    		<option value="{{ $role->id }}" @if ($role->id == $employee->role_id) selected @endif >{{ $role->name }}</option>
+                    	@endforeach
                     </select>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Email:</strong>
-                    <input type="text" name="email" value="{{ $employee->email }}" class="form-control" placeholder="Email">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Phone No.:</strong>
-                    <input type="text" name="phone" value="{{ $employee->phone }}" class="form-control" placeholder="Phone No.">
-                    <input type="hidden" name="user_id" value="{{ $employee->user_id }}">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">

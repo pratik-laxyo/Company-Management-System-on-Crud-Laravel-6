@@ -5,12 +5,19 @@
     <div class="col-md-12">
         <div class="row">
             <div class="col-lg-12 margin-tb">
+            		@role('Admin')
                 <div class="float-left">
                     <a class="btn btn-primary" href="{{ ('/home') }}"> Back</a>
                 </div>
                 <div class="float-right">
                     <a class="btn btn-primary" href="{{ route('company.edit',$row->id) }}"> Update</a>
                 </div>
+                @endrole
+                @role('Employee')
+                <div class="float-right">
+                    <a class="btn btn-primary" href="{{ ('/home') }}"> Back</a>
+                </div>
+                @endrole
             </div>
         </div>
     </div>
